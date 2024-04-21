@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message GameDB { repeated GameDBEntry games = 1; }
+
+message GameDBEntry {
+  optional int32 id = 1;
+  string name = 2;
+  optional string franchise = 3;
+  int64 crcHash = 4;
+  string console = 5;
+}
