@@ -5,7 +5,10 @@ use crate::{
 };
 use serde::Serialize;
 use serde_json::Value;
-use std::path::{Path, PathBuf};
+use std::{
+    path::{Path, PathBuf},
+    process::exit,
+};
 
 pub fn install() {
     println!("Installing shortcuts");
@@ -17,10 +20,17 @@ pub fn install() {
     let roms = map_roms(rom_paths);
     println!("Managed to link {} roms", roms.len());
     let output_dir = config.get("outputDir").unwrap();
+    let retro_arch_exec = config.get("retroArchExec").unwrap();
     for rom in roms {
         println!("Writing {} to file", rom.name);
-        let _ = write_rom_shortcut(output_dir.as_str().unwrap(), rom);
+        let _ = write_rom_shortcut(
+            output_dir.as_str().unwrap(),
+            retro_arch_exec.as_str().unwrap(),
+            rom,
+        );
     }
+    println!("Finished creating shortcuts");
+    exit(0);
 }
 
 fn map_roms(rom_paths: Vec<PathBuf>) -> Vec<Rom> {

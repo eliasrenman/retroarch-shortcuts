@@ -74,7 +74,15 @@ pub fn read_crc_checksum(path: PathBuf) -> u32 {
     hasher.finalize()
 }
 
-pub fn write_rom_shortcut(output_dir: &str, rom: Rom) {
+pub fn write_rom_shortcut(output_dir: &str, retroarch_path: &str, rom: Rom) {
     //TODO: add os specific instructions
-    write_json_to_file(&format!("{}/{}.json", output_dir, rom.name), json!(rom));
+    let _ = write_json_to_file(
+        &format!("{}/{}.json", output_dir, rom.name),
+        json!({
+            "rom": rom.path,
+            "retroarch": retroarch_path,
+            "name": rom.name,
+            "core": rom.console.core_name()
+        }),
+    );
 }
