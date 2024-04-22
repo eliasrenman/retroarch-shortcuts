@@ -15,7 +15,7 @@ pub fn create_config() {
     //     "Other" => Text::new("Path to shortcut output?").prompt().unwrap(),
     //     _ => panic!("Invalid option selected"),
     // };
-    let output_path = Text::new("Path to shortcut output?").prompt().unwrap():
+    let output_path = Text::new("Path to shortcut output?").prompt().unwrap();
     let config = json!({
       "outputDir": output_path,
       "romDir": rom_directory,

@@ -98,10 +98,10 @@ fn create_windows_lnk(output_dir: &str, retroarch_path: &str, core_dir: &str, ro
         retroarch_path,
         core_dir,
         rom.console.core_name(),
-        rom.path
+        rom.path.to_str().unwrap()
     );
     let lnk = format!("{}/{}.lnk", output_dir, rom.name);
-    let sl = ShellLink::new(target).unwrap();
-    sl.set_name(Option(rom.name.to_string()));
+    let mut sl = ShellLink::new(target).unwrap();
+    sl.set_name(Some(rom.name.to_string()));
     sl.create_lnk(lnk).unwrap();
 }
