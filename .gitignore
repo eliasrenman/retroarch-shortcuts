@@ -1,3 +1,4 @@
 /target
 src/generated/*
 !src/generated/mod.rs
+config.json
