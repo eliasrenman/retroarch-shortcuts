@@ -93,15 +93,15 @@ pub fn write_rom_shortcut(output_dir: &str, retroarch_path: &str, core_dir: &str
 }
 
 fn create_windows_lnk(output_dir: &str, retroarch_path: &str, core_dir: &str, rom: Rom) {
-    let target = format!(
-        r"{} -L {}/{} {}",
-        retroarch_path,
-        core_dir,
-        rom.console.core_name(),
-        rom.path.to_str().unwrap()
-    );
+    let target = format!(r"{}", retroarch_path);
     let lnk = format!("{}/{}.lnk", output_dir, rom.name);
     let mut sl = ShellLink::new(target).unwrap();
     sl.set_name(Some(rom.name.to_string()));
+    sl.set_arguments(Some(format!(
+        "-L {}/{} {}",
+        core_dir,
+        rom.console.core_name(),
+        rom.path.to_str().unwrap()
+    )));
     sl.create_lnk(lnk).unwrap();
 }
