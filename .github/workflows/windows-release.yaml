@@ -39,10 +39,8 @@ jobs:
           mkdir ./output
           Copy-Item -Path ./target/x86_64-pc-windows-msvc/release/retroarch-shortcuts.exe -Destination ./output -Force
           Copy-Item -Path ./gamedb.buf.gzip -Destination ./output -Force
-
-      - uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r build.zip output
+      - name: Zip build
+        run: Compress-Archive -Path ./output/* -Destination build.zip
 
       - name: Create release
         id: create_release
