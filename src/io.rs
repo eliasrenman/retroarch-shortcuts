@@ -1,8 +1,8 @@
 use crate::globals::PATH;
 use crate::logic::Rom;
 use crc32fast::Hasher;
-use serde_json::{json, to_string_pretty, to_value, Value};
-use std::fs::{metadata, read, read_dir, write, File};
+use serde_json::{json, to_string_pretty, Value};
+use std::fs::{metadata, read_dir, read_to_string, write, File};
 use std::io::Read;
 use std::path::{Path, PathBuf};
 
@@ -14,12 +14,9 @@ pub fn write_json_to_file(path: &str, json: Value) -> Result<(), std::io::Error>
 }
 
 pub fn read_json_file(path: &str) -> Result<Value, &str> {
-    let file = read(path);
-    if file.is_err() {
-        return Err("Failed to read file");
-    }
+    let file = read_to_string(path);
 
-    Ok(to_value(file.unwrap()).unwrap())
+    Ok(serde_json::from_str(file.unwrap().as_str()).unwrap())
 }
 
 pub fn traverse_directory(directory: &Path) -> Result<Vec<PathBuf>, std::io::Error> {

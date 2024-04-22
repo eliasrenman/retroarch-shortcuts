@@ -70,7 +70,10 @@ fn get_rom_paths(config: Value) -> Vec<PathBuf> {
     let paths = traverse_directory(Path::new(rom_path));
     match paths {
         Ok(val) => val,
-        Err(_) => panic!("Failed reading rom directory"),
+        Err(err) => {
+            println!("{}", err);
+            panic!("Failed reading rom directory")
+        }
     }
 }
 
