@@ -96,11 +96,11 @@ pub fn write_rom_shortcut(output_dir: &str, retroarch_path: &str, core_dir: &str
 fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, rom: Rom) {
     let name = rom.name.clone();
     // Write content to the batch script file
-    let temp_rs = r".\temp.rs";
-    let _ = write_file(&temp_rs, retroarch_path, core_dir, rom);
-    compile_file(&temp_rs, format!(r"{}\{}.exe", output_dir, name).as_str());
+    let temp_c = r".\temp.c";
+    let _ = write_file(&temp_c, retroarch_path, core_dir, rom);
+    compile_file(&temp_c, format!(r"{}\{}.exe", output_dir, name).as_str());
     // Delete the temporary batch script
-    fs::remove_file(temp_rs).expect("Failed to delete temporary batch script");
+    fs::remove_file(temp_c).expect("Failed to delete temporary batch script");
 }
 
 fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std::io::Result<()> {
@@ -109,16 +109,14 @@ fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std
     file.write_all(
         format!(
             r#"
-        use std::process::Command;
-        fn main() {{
-            let _ = Command::new(r"{retroarch_path}")
-            .arg(r"-L")
-            .arg(r"{core_dir}\{core_name}")
-            .arg(r"{rom_path}")
-            .output()
-            .expect("Failed to execute retroarch.exe");
-        }}
-    "#,
+            #include <stdlib.h>
+            int main() {{
+                char command[1000];
+                sprintf(command, "start cmd /c \"{retroarch_path} -L {core_dir}\{core_name} {rom_path} && exit\"");
+                system(command);
+                return 0;
+            }}
+            "#,
             retroarch_path = retroarch_path,
             core_dir = core_dir,
             core_name = rom.console.core_name(),
@@ -131,16 +129,15 @@ fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std
 }
 
 fn compile_file(path: &str, output_path: &str) {
-    let mut compile_file = Command::new("cmd");
-    compile_file
-        .args(&[
-            "/C",
-            "rustc",
-            "-o",
-            output_path,
-            "--target=x86_64-pc-windows-msvc",
-            path,
-        ])
-        .status()
-        .expect("process failed to execute");
+    let status = Command::new("gcc")
+        .arg("-o")
+        .arg(output_path)
+        .arg(path)
+        .status();
+
+    if status.is_ok() {
+        println!("Compilation successful!");
+    } else {
+        eprintln!("Compilation failed!");
+    }
 }
