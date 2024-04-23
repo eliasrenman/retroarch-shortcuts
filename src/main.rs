@@ -38,7 +38,7 @@ fn main_selector() {
     .unwrap();
     match main_selector {
         "Install / update - install shortcuts in output directory" => install(),
-        "Uninstall" => uninstall(),
+        "Uninstall - Remove shortcuts" => uninstall(),
         "Update Config" => create_config(),
         "Quit" => exit(0),
         _ => panic!("Invalid option"),

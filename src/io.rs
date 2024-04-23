@@ -100,7 +100,7 @@ fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, ro
     // Create the content of the executable
     let content = format!(
         r#"@echo off
-        start "" "{retroarch_path}" -L "{core_dir}\{core_name}" "{rom_path}"
+        Start "{retroarch_path}" -L "{core_dir}\{core_name}" "{rom_path}"
         "#,
         retroarch_path = retroarch_path,
         core_dir = core_dir,
