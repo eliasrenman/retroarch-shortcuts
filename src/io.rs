@@ -109,7 +109,7 @@ fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std
     file.write_all(
         format!(
             r#"
-        let output = Command::new({retroarch_path})
+        let _ = Command::new({retroarch_path})
         .arg("-L")
         .arg("{core_dir}\{core_name}")
         .arg("{rom_path}")
