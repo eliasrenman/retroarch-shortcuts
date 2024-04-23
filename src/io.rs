@@ -1,11 +1,13 @@
 use crate::globals::PATH;
 use crate::logic::Rom;
 use crc32fast::Hasher;
-use mslnk::ShellLink;
 use serde_json::{json, to_string_pretty, Value};
+use std::fs::File;
 use std::fs::{metadata, read_dir, read_to_string, write, File};
+use std::io::prelude::*;
 use std::io::Read;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 
 pub fn path_exists(path: &str) -> bool {
     metadata(path).is_ok()
@@ -86,22 +88,37 @@ pub fn write_rom_shortcut(output_dir: &str, retroarch_path: &str, core_dir: &str
                 }),
             );
         }
-        "windows" => create_windows_lnk(output_dir, retroarch_path, core_dir, rom),
+        "windows" => create_windows_exe(output_dir, retroarch_path, core_dir, rom),
         // "macos" => println!("Running on macOS!"),
         _ => println!("Running on an unknown operating system!"),
     };
 }
 
-fn create_windows_lnk(output_dir: &str, retroarch_path: &str, core_dir: &str, rom: Rom) {
-    let target = format!(r"{}", retroarch_path);
-    let lnk = format!("{}/{}.lnk", output_dir, rom.name);
-    let mut sl = ShellLink::new(target).unwrap();
-    sl.set_name(Some(rom.name.to_string()));
-    sl.set_arguments(Some(format!(
-        "-L {}/{} {}",
-        core_dir,
-        rom.console.core_name(),
-        rom.path.to_str().unwrap()
-    )));
-    sl.create_lnk(lnk).unwrap();
+fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, rom: Rom) {
+    // Create the executable file path
+    let exe_path = format!("{}/{}.exe", output_dir, rom.name);
+
+    // Create the content of the executable
+    let content = format!(
+        r#"@echo off
+        start "" "{retroarch_path}" -L "{core_dir}\{core_name}" "{rom_path}"
+        "#,
+        retroarch_path = retroarch_path,
+        core_dir = core_dir,
+        core_name = rom.console.core_name(),
+        rom_path = rom.path.to_str().unwrap()
+    );
+
+    // Write content to the executable file
+    let mut file = File::create(&exe_path).expect("Failed to create executable");
+    file.write_all(content.as_bytes())
+        .expect("Failed to write to executable");
+
+    // Make the file executable (Windows specific)
+    Command::new("cmd")
+        .args(&["/C", "attrib +x", &exe_path])
+        .output()
+        .expect("Failed to make file executable");
+
+    println!("Executable created at: {}", exe_path);
 }
