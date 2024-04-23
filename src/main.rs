@@ -13,6 +13,7 @@ mod generated;
 mod globals;
 mod io;
 mod logic;
+mod media;
 
 fn main() {
     loop {

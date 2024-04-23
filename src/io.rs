@@ -2,7 +2,7 @@ use crate::globals::PATH;
 use crate::logic::Rom;
 use crc32fast::Hasher;
 use serde_json::{json, to_string_pretty, Value};
-use std::fs::{self, metadata, read_dir, read_to_string, write, File};
+use std::fs::{metadata, read_dir, read_to_string, write, File};
 use std::io::prelude::*;
 use std::io::Read;
 use std::path::{Path, PathBuf};

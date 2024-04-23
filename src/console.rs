@@ -257,6 +257,142 @@ impl Console {
             _ => Console::OTHER,
         }
     }
+    pub fn to_title(self: Console) -> &'static str {
+        match self {
+            Console::AMSTRAD_CPC => "Amstrad - CPC",
+            Console::ATARI_5200 => "Atari - 5200",
+            Console::ATARI_7800 => "Atari - 7800",
+            Console::ATARI_JAGUAR => "Atari - Jaguar",
+            Console::ATARI_LYNX => "Atari - Lynx",
+            Console::ATARI_ST => "Atari - ST",
+            Console::BANDAI_WONDERSWAN => "Bandai - WonderSwan",
+            Console::BANDAI_WONDERSWAN_COLOR => "Bandai - WonderSwan Color",
+            Console::CANNONBALL => "Cannonball",
+            Console::CASIO_LOOPY => "Casio - Loopy",
+            Console::CASIO_PV_1000 => "Casio - PV-1000",
+            Console::CAVE_STORY => "Cave Story",
+            Console::CHAILOVE => "ChaiLove",
+            Console::COLECO_COLECOVISION => "Coleco - ColecoVision",
+            Console::COMMODORE_64 => "Commodore - 64",
+            Console::COMMODORE_AMIGA => "Commodore - Amiga",
+            Console::COMMODORE_PLUS_4 => "Commodore - Plus-4",
+            Console::COMMODORE_VIC_20 => "Commodore - VIC-20",
+            Console::DOOM => "DOOM",
+            Console::DOS => "DOS",
+            Console::DINOTHAWR => "Dinothawr",
+            Console::EMERSON_ARCADIA_2001 => "Emerson - Arcadia 2001",
+            Console::ENTEX_ADVENTURE_VISION => "Entex - Adventure Vision",
+            Console::EPOCH_SUPER_CASSETTE_VISION => "Epoch - Super Cassette Vision",
+            Console::FBNEO_ARCADE_GAMES => "FBNeo - Arcade Games",
+            Console::FAIRCHILD_CHANNEL_F => "Fairchild - Channel F",
+            Console::FLASHBACK => "Flashback",
+            Console::FUNTECH_SUPER_ACAN => "Funtech - Super Acan",
+            Console::GCE_VECTREX => "GCE - Vectrex",
+            Console::GAMEPARK_GP32 => "GamePark - GP32",
+            Console::HANDHELD_ELECTRONIC_GAME => "Handheld Electronic Game",
+            Console::HARTUNG_GAME_MASTER => "Hartung - Game Master",
+            Console::LEAPFROG_LEAPSTER_LEARNING_GAME_SYSTEM => {
+                "LeapFrog - Leapster Learning Game System"
+            }
+            Console::LUTRO => "Lutro",
+            Console::MAME => "MAME",
+            Console::MAME_2000 => "MAME 2000",
+            Console::MAME_2003 => "MAME 2003",
+            Console::MAME_2003_PLUS => "MAME 2003-Plus",
+            Console::MAME_2010 => "MAME 2010",
+            Console::MAME_2015 => "MAME 2015",
+            Console::MAME_2016 => "MAME 2016",
+            Console::MAGNAVOX_ODYSSEY2 => "Magnavox - Odyssey2",
+            Console::MATTEL_INTELLIVISION => "Mattel - Intellivision",
+            Console::MICROSOFT_MSX => "Microsoft - MSX",
+            Console::MICROSOFT_MSX2 => "Microsoft - MSX2",
+            Console::MICROSOFT_XBOX => "Microsoft - Xbox",
+            Console::MRBOOM => "MrBoom",
+            Console::NEC_PC_ENGINE_TURBOGRAFX_16 => "NEC - PC Engine - TurboGrafx 16",
+            Console::NEC_PC_ENGINE_CD_TURBOGRAFX_CD => "NEC - PC Engine CD - TurboGrafx-CD",
+            Console::NEC_PC_ENGINE_SUPERGRAFX => "NEC - PC Engine SuperGrafx",
+            Console::NEC_PC_FX => "NEC - PC-FX",
+            Console::NINTENDO_FAMILY_COMPUTER_DISK_SYSTEM => {
+                "Nintendo - Family Computer Disk System"
+            }
+            Console::NINTENDO_GAME_BOY => "Nintendo - Game Boy",
+            Console::NINTENDO_GAME_BOY_ADVANCE => "Nintendo - Game Boy Advance",
+            Console::NINTENDO_GAME_BOY_COLOR => "Nintendo - Game Boy Color",
+            Console::NINTENDO_GAMECUBE => "Nintendo - GameCube",
+            Console::NINTENDO_NINTENDO_3DS => "Nintendo - Nintendo 3DS",
+            Console::NINTENDO_NINTENDO_3DS_DIGITAL => "Nintendo - Nintendo 3DS (Digital)",
+            Console::NINTENDO_NINTENDO_64 => "Nintendo - Nintendo 64",
+            Console::NINTENDO_NINTENDO_64DD => "Nintendo - Nintendo 64DD",
+            Console::NINTENDO_NINTENDO_DS => "Nintendo - Nintendo DS",
+            Console::NINTENDO_NINTENDO_DS_DOWNLOAD_PLAY => "Nintendo - Nintendo DS (Download Play)",
+            Console::NINTENDO_NINTENDO_DS_DOWNLOAD_PLAY_BETA => {
+                "Nintendo - Nintendo DS (Download Play) (BETA)"
+            }
+            Console::NINTENDO_NINTENDO_DSI => "Nintendo - Nintendo DSi",
+            Console::NINTENDO_NINTENDO_DSI_DIGITAL => "Nintendo - Nintendo DSi (Digital)",
+            Console::NINTENDO_NINTENDO_DSI_DECRYPTED => "Nintendo - Nintendo DSi Decrypted",
+            Console::NINTENDO_NINTENDO_ENTERTAINMENT_SYSTEM => {
+                "Nintendo - Nintendo Entertainment System"
+            }
+            Console::NINTENDO_POKEMON_MINI => "Nintendo - Pokemon Mini",
+            Console::NINTENDO_SATELLAVIEW => "Nintendo - Satellaview",
+            Console::NINTENDO_SUFAMI_TURBO => "Nintendo - Sufami Turbo",
+
+            Console::NINTENDO_SUPER_NINTENDO_ENTERTAINMENT_SYSTEM => {
+                "Nintendo - Super Nintendo Entertainment System"
+            }
+            Console::NINTENDO_VIRTUAL_BOY => "Nintendo - Virtual Boy",
+            Console::NINTENDO_WII => "Nintendo - Wii",
+            Console::NINTENDO_WII_DIGITAL => "Nintendo - Wii (Digital)",
+            Console::NINTENDO_E_READER => "Nintendo - e-Reader",
+            Console::PHILIPS_VIDEOPAC_PLUS => "Philips - Videopac+",
+            Console::QUAKE => "Quake",
+            Console::RCA_STUDIO_II => "RCA - Studio II",
+            Console::RPG_MAKER => "RPG Maker",
+            Console::RICK_DANGEROUS => "Rick Dangerous",
+            Console::SNK_NEO_GEO_CD => "SNK - Neo Geo CD",
+            Console::SNK_NEO_GEO_POCKET => "SNK - Neo Geo Pocket",
+            Console::SNK_NEO_GEO_POCKET_COLOR => "SNK - Neo Geo Pocket Color",
+            Console::SCUMMVM => "ScummVM",
+            Console::SEGA_32X => "Sega - 32X",
+            Console::SEGA_DREAMCAST => "Sega - Dreamcast",
+            Console::SEGA_GAME_GEAR => "Sega - Game Gear",
+            Console::SEGA_MASTER_SYSTEM_MARK_III => "Sega - Master System - Mark III",
+            Console::SEGA_MEGA_DRIVE_GENESIS => "Sega - Mega Drive - Genesis",
+            Console::SEGA_MEGA_CD_SEGA_CD => "Sega - Mega-CD - Sega CD",
+            Console::SEGA_PICO => "Sega - PICO",
+            Console::SEGA_SG_1000 => "Sega - SG-1000",
+            Console::SEGA_SATURN => "Sega - Saturn",
+            Console::SHARP_X68000 => "Sharp - X68000",
+            Console::SINCLAIR_ZX_81 => "Sinclair - ZX 81",
+            Console::SINCLAIR_ZX_SPECTRUM => "Sinclair - ZX Spectrum",
+            Console::SINCLAIR_ZX_SPECTRUM_PLUS_3 => "Sinclair - ZX Spectrum +3",
+            Console::SONY_PLAYSTATION => "Sony - PlayStation",
+            Console::SONY_PLAYSTATION_2 => "Sony - PlayStation 2",
+            Console::SONY_PLAYSTATION_3 => "Sony - PlayStation 3",
+            Console::SONY_PLAYSTATION_3_DOWNLOADABLE => "Sony - PlayStation 3 (Downloadable)",
+            Console::SONY_PLAYSTATION_3_PSN_ => "Sony - PlayStation 3 (PSN)",
+            Console::SONY_PLAYSTATION_PORTABLE => "Sony - PlayStation Portable",
+            Console::SONY_PLAYSTATION_PORTABLE_PSN => "Sony - PlayStation Portable (PSN)",
+            Console::SONY_PLAYSTATION_PORTABLE_PSX2PSP => "Sony - PlayStation Portable (PSX2PSP)",
+            Console::SONY_PLAYSTATION_PORTABLE_UMD_MUSIC => {
+                "Sony - PlayStation Portable (UMD Music)"
+            }
+            Console::SONY_PLAYSTATION_PORTABLE_UMD_VIDEO => {
+                "Sony - PlayStation Portable (UMD Video)"
+            }
+            Console::TIC_80 => "TIC-80",
+            Console::THE_3DO_COMPANY_3DO => "The 3DO Company - 3DO",
+            Console::THOMSON_MOTO => "Thomson - MOTO",
+            Console::TIGER_GAME_DOT_COM => "Tiger - Game.com",
+            Console::TOMB_RAIDER => "Tomb Raider",
+            Console::UZEBOX => "Uzebox",
+            Console::VTECH_CREATIVISION => "VTech - CreatiVision",
+            Console::VTECH_V_DOT_SMILE => "VTech - V.Smile",
+            Console::WATARA_SUPERVISION => "Watara - Supervision",
+            Console::OTHER => "",
+        }
+    }
 
     pub fn core_name(&self) -> &'static str {
         match self {
@@ -330,7 +466,7 @@ impl Console {
             Console::NINTENDO_POKEMON_MINI => "pokemini_libretro.dll",
             Console::NINTENDO_SATELLAVIEW => "bsnes_mercury_libretro.dll",
             Console::NINTENDO_SUFAMI_TURBO => "bsnes_mercury_libretro.dll",
-            Console::NINTENDO_SUPER_NINTENDO_ENTERTAINMENT_SYSTEM => "bsnes_mercury_libretro.dll",
+            Console::NINTENDO_SUPER_NINTENDO_ENTERTAINMENT_SYSTEM => "snes9x_libretro.dll",
             Console::NINTENDO_VIRTUAL_BOY => "beetle_vb_libretro.dll",
             Console::NINTENDO_WII => "dolphin_libretro.dll",
             Console::NINTENDO_WII_DIGITAL => "dolphin_libretro.dll",

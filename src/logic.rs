@@ -2,6 +2,7 @@ use crate::{
     console::Console,
     database::GameDatabase,
     io::{get_config, read_crc_checksum, traverse_directory, write_rom_shortcut},
+    media::download_title,
 };
 use serde::Serialize;
 use serde_json::Value;
@@ -21,6 +22,12 @@ pub fn install() {
     let roms = map_roms(rom_paths);
     println!("Managed to link {} roms", roms.len());
     let output_dir = config.get("outputDir").unwrap();
+
+    // Make sure to recursively create all the directories
+    if let Some(parent_dir) = Path::new(format!(r"{}\titles", output_dir).as_str()).parent() {
+        fs::create_dir_all(parent_dir)?;
+    }
+
     let retro_arch_exec = config.get("retroArchExec").unwrap();
     let core_dir = config.get("emulatorDir").unwrap();
     for rom in roms {
@@ -31,6 +38,7 @@ pub fn install() {
             core_dir.as_str().unwrap(),
             rom,
         );
+        let __ = download_title(rom, format!(r"{}\titles\{}", output_dir, rom.name).as_str()).await;
     }
     println!("Finished creating shortcuts");
     exit(0);
