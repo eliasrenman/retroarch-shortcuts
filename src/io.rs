@@ -114,7 +114,7 @@ fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std
             
             int main() {{
                 char command[1000];
-                sprintf(command, "start cmd /c \"{retroarch_path} -L {core_dir}\\{core_name} {rom_path} && exit\"");
+                sprintf(command, "start cmd /c \"{retroarch_path} -L {core_dir}\\{core_name} {rom_path}\"");
                 system(command);
                 return 0;
             }}
