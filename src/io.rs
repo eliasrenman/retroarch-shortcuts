@@ -109,18 +109,20 @@ fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std
     file.write_all(
         format!(
             r#"
-            #include <stdlib.h>
+            
+            #include <stdio.h>
+            
             int main() {{
                 char command[1000];
-                sprintf(command, "start cmd /c \"{retroarch_path} -L {core_dir}\{core_name} {rom_path} && exit\"");
+                sprintf(command, "start cmd /c \"{retroarch_path} -L {core_dir}\\{core_name} {rom_path} && exit\"");
                 system(command);
                 return 0;
             }}
             "#,
-            retroarch_path = retroarch_path,
-            core_dir = core_dir,
-            core_name = rom.console.core_name(),
-            rom_path = rom.path.to_str().unwrap()
+            retroarch_path = retroarch_path.replace(r"\", r"\\"),
+            core_dir = core_dir.replace(r"\", r"\\"),
+            core_name = rom.console.core_name().replace(r"\", r"\\"),
+            rom_path = rom.path.to_str().unwrap().replace(r"\", r"\\")
         )
         .as_bytes(),
     )?;
