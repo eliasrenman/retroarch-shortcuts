@@ -102,7 +102,7 @@ fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, ro
     // Delete the temporary batch script
     fs::remove_file(temp_rs).expect("Failed to delete temporary batch script");
 }
-/// Create a plugin file at runtime which will be converted to shared library
+
 fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std::io::Result<()> {
     let mut file = File::create(path)?;
 
