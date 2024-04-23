@@ -109,12 +109,15 @@ fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std
     file.write_all(
         format!(
             r#"
-        let _ = Command::new(r"{retroarch_path}")
-        .arg(r"-L")
-        .arg(r"{core_dir}\{core_name}")
-        .arg(r"{rom_path}")
-        .output()
-        .expect("Failed to execute retroarch.exe");
+        use std::process::Command;
+        fn main() {{
+            let _ = Command::new(r"{retroarch_path}")
+            .arg(r"-L")
+            .arg(r"{core_dir}\{core_name}")
+            .arg(r"{rom_path}")
+            .output()
+            .expect("Failed to execute retroarch.exe");
+        }}
     "#,
             retroarch_path = retroarch_path,
             core_dir = core_dir,
