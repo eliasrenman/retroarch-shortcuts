@@ -106,11 +106,11 @@ fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, ro
     );
 
     // Write content to the batch script file
-    let batch_script_path = "temp.bat";
+    let batch_script_path = r".\temp.bat";
     fs::write(&batch_script_path, &content).expect("Failed to create batch script file");
 
     // Use IExpress to create a self-extracting executable
-    let output_path = format!("{}/{}.exe", output_dir, rom.name);
+    let output_path = format!(r"{}\{}.exe", output_dir, rom.name);
     Command::new("iexpress")
         .args(&[
             "/n", // No user prompts
