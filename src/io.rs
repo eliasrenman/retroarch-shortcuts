@@ -100,7 +100,7 @@ fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, ro
     let _ = write_file(&temp_c, retroarch_path, core_dir, rom);
     compile_file(&temp_c, format!(r"{}\{}.exe", output_dir, name).as_str());
     // Delete the temporary batch script
-    // fs::remove_file(temp_c).expect("Failed to delete temporary batch script");
+    fs::remove_file(temp_c).expect("Failed to delete temporary batch script");
 }
 
 fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std::io::Result<()> {
