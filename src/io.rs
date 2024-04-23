@@ -2,7 +2,7 @@ use crate::globals::PATH;
 use crate::logic::Rom;
 use crc32fast::Hasher;
 use serde_json::{json, to_string_pretty, Value};
-use std::fs::{metadata, read_dir, read_to_string, write, File};
+use std::fs::{self, metadata, read_dir, read_to_string, write, File};
 use std::io::prelude::*;
 use std::io::Read;
 use std::path::{Path, PathBuf};
@@ -94,10 +94,7 @@ pub fn write_rom_shortcut(output_dir: &str, retroarch_path: &str, core_dir: &str
 }
 
 fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, rom: Rom) {
-    // Create the executable file path
-    let exe_path = format!("{}/{}.exe", output_dir, rom.name);
-
-    // Create the content of the executable
+    // Create the content of the batch script
     let content = format!(
         r#"@echo off
         Start "{retroarch_path}" -L "{core_dir}\{core_name}" "{rom_path}"
@@ -108,16 +105,26 @@ fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, ro
         rom_path = rom.path.to_str().unwrap()
     );
 
-    // Write content to the executable file
-    let mut file = File::create(&exe_path).expect("Failed to create executable");
-    file.write_all(content.as_bytes())
-        .expect("Failed to write to executable");
+    // Write content to the batch script file
+    let batch_script_path = "temp.bat";
+    fs::write(&batch_script_path, &content).expect("Failed to create batch script file");
 
-    // Make the file executable (Windows specific)
-    Command::new("cmd")
-        .args(&["/C", "attrib +x", &exe_path])
+    // Use IExpress to create a self-extracting executable
+    let output_path = format!("{}/{}.exe", output_dir, rom.name);
+    Command::new("iexpress")
+        .args(&[
+            "/n", // No user prompts
+            "/q", // Quiet mode
+            "/m",
+            &batch_script_path, // Path to the script
+            "/o",
+            &output_path, // Output path for the executable
+        ])
         .output()
-        .expect("Failed to make file executable");
+        .expect("Failed to create executable using IExpress");
 
-    println!("Executable created at: {}", exe_path);
+    println!("Executable created at: {}", output_path);
+
+    // Delete the temporary batch script
+    fs::remove_file(batch_script_path).expect("Failed to delete temporary batch script");
 }
