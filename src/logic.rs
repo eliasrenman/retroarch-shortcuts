@@ -63,7 +63,7 @@ fn map_roms(rom_paths: Vec<PathBuf>) -> Vec<Rom> {
         .collect()
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 pub struct Rom {
     pub path: PathBuf,
     pub checksum: u32,

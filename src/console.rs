@@ -1,6 +1,6 @@
 use serde::Serialize;
 #[allow(non_camel_case_types)]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub enum Console {
     AMSTRAD_CPC,
     ATARI_5200,

@@ -94,37 +94,50 @@ pub fn write_rom_shortcut(output_dir: &str, retroarch_path: &str, core_dir: &str
 }
 
 fn create_windows_exe(output_dir: &str, retroarch_path: &str, core_dir: &str, rom: Rom) {
-    // Create the content of the batch script
-    let content = format!(
-        r#"@echo off
-        Start "{retroarch_path}" -L "{core_dir}\{core_name}" "{rom_path}"
-        "#,
-        retroarch_path = retroarch_path,
-        core_dir = core_dir,
-        core_name = rom.console.core_name(),
-        rom_path = rom.path.to_str().unwrap()
-    );
-
+    let name = rom.name.clone();
     // Write content to the batch script file
-    let batch_script_path = r".\temp.bat";
-    fs::write(&batch_script_path, &content).expect("Failed to create batch script file");
-
-    // Use IExpress to create a self-extracting executable
-    let output_path = format!(r"{}\{}.exe", output_dir, rom.name);
-    Command::new("iexpress")
-        .args(&[
-            "/n", // No user prompts
-            "/q", // Quiet mode
-            "/m",
-            &batch_script_path, // Path to the script
-            "/o",
-            &output_path, // Output path for the executable
-        ])
-        .output()
-        .expect("Failed to create executable using IExpress");
-
-    println!("Executable created at: {}", output_path);
-
+    let temp_rs = r".\temp.rs";
+    let _ = write_file(&temp_rs, retroarch_path, core_dir, rom);
+    compile_file(&temp_rs, format!(r"{}\{}.exe", output_dir, name).as_str());
     // Delete the temporary batch script
-    fs::remove_file(batch_script_path).expect("Failed to delete temporary batch script");
+    fs::remove_file(temp_rs).expect("Failed to delete temporary batch script");
+}
+/// Create a plugin file at runtime which will be converted to shared library
+fn write_file(path: &str, retroarch_path: &str, core_dir: &str, rom: Rom) -> std::io::Result<()> {
+    let mut file = File::create(path)?;
+
+    file.write_all(
+        format!(
+            r#"
+        let output = Command::new({retroarch_path})
+        .arg("-L")
+        .arg("{core_dir}\{core_name}")
+        .arg("{rom_path}")
+        .output()
+        .expect("Failed to execute retroarch.exe");
+    "#,
+            retroarch_path = retroarch_path,
+            core_dir = core_dir,
+            core_name = rom.console.core_name(),
+            rom_path = rom.path.to_str().unwrap()
+        )
+        .as_bytes(),
+    )?;
+
+    Ok(())
+}
+
+fn compile_file(path: &str, output_path: &str) {
+    let mut compile_file = Command::new("cmd");
+    compile_file
+        .args(&[
+            "/C",
+            "rustc",
+            "-o",
+            output_path,
+            "--target=x86_64-pc-windows-msvc",
+            path,
+        ])
+        .status()
+        .expect("process failed to execute");
 }
