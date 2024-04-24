@@ -7,6 +7,7 @@ use crate::{
 use serde::Serialize;
 use serde_json::Value;
 use std::{
+    error::Error,
     fs,
     path::{Path, PathBuf},
     process::exit,
@@ -38,10 +39,21 @@ pub fn install() {
             core_dir.as_str().unwrap(),
             rom.clone(),
         );
-        let __ = download_title(
+
+        println!("Starting download of title");
+
+        let download_result: Result<(), Box<dyn Error>> = download_title(
             rom.clone(),
-            format!(r"{}\titles\{}", output_dir, rom.clone().name).as_str(),
+            format!(r"{}\titles\{}.png", output_dir, rom.clone().name).as_str(),
         );
+        match download_result {
+            Ok(_) => println!("Successfully downloaded {}", rom.clone().name),
+            Err(err) => println!(
+                "Failed downloading {} with error {}",
+                rom.name,
+                err.to_string()
+            ),
+        }
     }
     println!("Finished creating shortcuts");
     exit(0);
