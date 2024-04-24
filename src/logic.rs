@@ -22,7 +22,7 @@ pub fn install() {
 
     let roms = map_roms(rom_paths);
     println!("Managed to link {} roms", roms.len());
-    let output_dir = config.get("outputDir").unwrap();
+    let output_dir = config.get("outputDir").unwrap().as_str().unwrap();
 
     // Make sure to recursively create all the directories
     if !path_exists(format!(r"{}\titles", output_dir).as_str()) {
@@ -34,7 +34,7 @@ pub fn install() {
     for rom in roms {
         println!("Writing {} to file", rom.name);
         let _ = write_rom_shortcut(
-            output_dir.as_str().unwrap(),
+            output_dir,
             retro_arch_exec.as_str().unwrap(),
             core_dir.as_str().unwrap(),
             rom.clone(),
