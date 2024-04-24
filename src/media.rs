@@ -3,6 +3,7 @@ use attohttpc::get;
 use crate::logic::Rom;
 use std::fs::File;
 use std::io::Write;
+use std::path::Path;
 use std::str;
 
 pub fn download_title(rom: Rom, title_path: &str) -> Result<(), Box<dyn std::error::Error>> {
@@ -26,8 +27,8 @@ pub fn download_title(rom: Rom, title_path: &str) -> Result<(), Box<dyn std::err
     // if content_type == "image/png" {
     //     return download_title(&content_string[..content_string.len() - 4], title_path).await;
     // }
-
-    let mut out = File::create(title_path)?;
+    println!("Attempting to write image to {}", title_path);
+    let mut out = File::create(Path::new(title_path))?;
     out.write_all(&bytes)?;
     Ok(())
 }

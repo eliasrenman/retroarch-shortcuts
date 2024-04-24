@@ -1,7 +1,7 @@
 use crate::{
     console::Console,
     database::GameDatabase,
-    io::{get_config, read_crc_checksum, traverse_directory, write_rom_shortcut},
+    io::{get_config, path_exists, read_crc_checksum, traverse_directory, write_rom_shortcut},
     media::download_title,
 };
 use serde::Serialize;
@@ -25,8 +25,8 @@ pub fn install() {
     let output_dir = config.get("outputDir").unwrap();
 
     // Make sure to recursively create all the directories
-    if let Some(parent_dir) = Path::new(format!(r"{}\titles", output_dir).as_str()).parent() {
-        let _ = fs::create_dir_all(parent_dir);
+    if !path_exists(format!(r"{}\titles", output_dir).as_str()) {
+        let _ = fs::create_dir_all(format!(r"{}\titles", output_dir).as_str());
     }
 
     let retro_arch_exec = config.get("retroArchExec").unwrap();
