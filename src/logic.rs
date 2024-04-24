@@ -2,12 +2,11 @@ use crate::{
     console::Console,
     database::GameDatabase,
     io::{get_config, path_exists, read_crc_checksum, traverse_directory, write_rom_shortcut},
-    media::download_title,
+    media::{download_boxart, download_title},
 };
 use serde::Serialize;
 use serde_json::Value;
 use std::{
-    error::Error,
     fs,
     path::{Path, PathBuf},
     process::exit,
@@ -28,6 +27,9 @@ pub fn install() {
     if !path_exists(format!(r"{}\titles", output_dir).as_str()) {
         let _ = fs::create_dir_all(format!(r"{}\titles", output_dir).as_str());
     }
+    if !path_exists(format!(r"{}\boxart", output_dir).as_str()) {
+        let _ = fs::create_dir_all(format!(r"{}\boxart", output_dir).as_str());
+    }
 
     let retro_arch_exec = config.get("retroArchExec").unwrap();
     let core_dir = config.get("emulatorDir").unwrap();
@@ -40,20 +42,16 @@ pub fn install() {
             rom.clone(),
         );
 
-        println!("Starting download of title");
+        println!("Starting download of media");
 
-        let download_result: Result<(), Box<dyn Error>> = download_title(
+        let _ = download_title(
             rom.clone(),
             format!(r"{}\titles\{}.png", output_dir, rom.clone().name).as_str(),
         );
-        match download_result {
-            Ok(_) => println!("Successfully downloaded {}", rom.clone().name),
-            Err(err) => println!(
-                "Failed downloading {} with error {}",
-                rom.name,
-                err.to_string()
-            ),
-        }
+        let _ = download_boxart(
+            rom.clone(),
+            format!(r"{}\boxart\{}.png", output_dir, rom.clone().name).as_str(),
+        );
     }
     println!("Finished creating shortcuts");
     exit(0);
