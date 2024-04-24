@@ -25,7 +25,7 @@ pub fn install() {
 
     // Make sure to recursively create all the directories
     if let Some(parent_dir) = Path::new(format!(r"{}\titles", output_dir).as_str()).parent() {
-        fs::create_dir_all(parent_dir)?;
+        let _ = fs::create_dir_all(parent_dir);
     }
 
     let retro_arch_exec = config.get("retroArchExec").unwrap();
@@ -36,9 +36,12 @@ pub fn install() {
             output_dir.as_str().unwrap(),
             retro_arch_exec.as_str().unwrap(),
             core_dir.as_str().unwrap(),
-            rom,
+            rom.clone(),
         );
-        let __ = download_title(rom, format!(r"{}\titles\{}", output_dir, rom.name).as_str()).await;
+        let __ = download_title(
+            rom.clone(),
+            format!(r"{}\titles\{}", output_dir, rom.clone().name).as_str(),
+        );
     }
     println!("Finished creating shortcuts");
     exit(0);
